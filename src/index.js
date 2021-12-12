@@ -1,13 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { createBrowserHistory } from 'history';
 import reportWebVitals from './reportWebVitals';
 
+import './index.css';
+import App from './App';
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers';
+import { fetchStudents } from './actions/student.actions.js';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
+store.dispatch(fetchStudents());
+
+export const history = createBrowserHistory({forceRefresh: true});
+
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
